@@ -1,14 +1,18 @@
 (() => {
   const addEpicCarsLink = () => {
     const portfolio = document.querySelector(".portfolio");
-    if (!portfolio || portfolio.querySelector(".epic-cars-home")) return;
+    if (!portfolio || portfolio.querySelector(".pet-projects-home")) return;
 
     const project = document.createElement("aside");
-    project.className = "epic-cars-home";
+    project.className = "pet-projects-home";
     project.innerHTML = `
-      <span class="epic-cars-copy">Pet-project:<br>gallery of epic cars<br>with a mini-game</span>
-      <a class="epic-cars-preview" href="https://alexislarin.com/epic-cars/" target="_blank" rel="noreferrer" aria-label="Open Epic Cars in a new tab">
-        <img src="./assets/epic-cars-preview.png" alt="Epic Cars gallery and mini-game" />
+      <a class="pet-project" href="https://alexislarin.com/trip/" target="_blank" rel="noreferrer" aria-label="Open Fancy a Trip in a new tab">
+        <span class="pet-project-copy">Pet project:<br>experimenting with shadcn styling across code and Figma, using AI</span>
+        <span class="pet-project-preview"><img src="./assets/fancy-a-trip-preview.png" alt="Fancy a Trip interface" /></span>
+      </a>
+      <a class="pet-project" href="https://alexislarin.com/epic-cars/" target="_blank" rel="noreferrer" aria-label="Open Epic Cars in a new tab">
+        <span class="pet-project-copy">Another one:<br>just for fun vibe-coding — gallery of epic cars with a mini-game</span>
+        <span class="pet-project-preview"><img src="./assets/epic-cars-preview.png" alt="Epic Cars gallery and mini-game" /></span>
       </a>
     `;
     portfolio.append(project);
@@ -29,7 +33,7 @@
 
     const lastTitle = document.querySelectorAll(".flying-copy.current .flying-title");
     const isLastSlide = [...lastTitle].some((title) => title.textContent === "Track-mode HMI concept");
-    const project = document.querySelector(".epic-cars-home");
+    const project = document.querySelector(".pet-projects-home");
     if (!isLastSlide || !project) return;
 
     project.classList.add("is-returning");
