@@ -8,11 +8,11 @@
     project.innerHTML = `
       <a class="pet-project" href="https://alexislarin.com/trip/" target="_blank" rel="noreferrer" aria-label="Open Fancy a Trip in a new tab">
         <span class="pet-project-copy">Pet project:<br>experimenting with shadcn styling across code and Figma, using AI</span>
-        <span class="pet-project-preview"><img src="./assets/fancy-a-trip-preview.png" alt="Fancy a Trip interface" /></span>
+        <span class="pet-project-preview"><img src="./assets/fancy-a-trip-previewoptimised.png" alt="Fancy a Trip interface" /></span>
       </a>
       <a class="pet-project" href="https://alexislarin.com/epic-cars/" target="_blank" rel="noreferrer" aria-label="Open Epic Cars in a new tab">
         <span class="pet-project-copy">Another one:<br>just for fun vibe-coding — gallery of epic cars with a mini-game</span>
-        <span class="pet-project-preview"><img src="./assets/epic-cars-preview.png" alt="Epic Cars gallery and mini-game" /></span>
+        <span class="pet-project-preview"><img src="./assets/epic-cars-previewoptimised.png" alt="Epic Cars gallery and mini-game" /></span>
       </a>
     `;
     portfolio.append(project);
