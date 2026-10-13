@@ -1,0 +1,81 @@
+/* An ear alone anticipates the direction of its click. */
+.gallery-track :is(img, video) {
+  translate: 0 0;
+  will-change: translate;
+  transition: opacity .2s cubic-bezier(.7, 0, .25, 1), translate .2s cubic-bezier(.7, 0, .25, 1);
+}
+
+.gallery-track :is(img, video).gallery-media-arriving.from-right {
+  animation: gallery-arrival-from-right .8s cubic-bezier(.7, 0, .25, 1) both;
+}
+
+.gallery-track :is(img, video).gallery-media-arriving.from-left {
+  animation: gallery-arrival-from-left .8s cubic-bezier(.7, 0, .25, 1) both;
+}
+
+.flying-title.gallery-media-arriving.from-bottom {
+  animation: title-arrival-from-bottom .7s linear both;
+}
+
+.flying-title.gallery-media-arriving.from-top {
+  animation: title-arrival-from-top .7s linear both;
+}
+
+@keyframes gallery-arrival-from-right {
+  0%, 62.5% { translate: 0 0; }
+  75% {
+    translate: -.2vw 0;
+    animation-timing-function: cubic-bezier(0, 0, .2, 1);
+  }
+  100% { translate: 0 0; }
+}
+
+@keyframes gallery-arrival-from-left {
+  0%, 62.5% { translate: 0 0; }
+  75% {
+    translate: .2vw 0;
+    animation-timing-function: cubic-bezier(0, 0, .2, 1);
+  }
+  100% { translate: 0 0; }
+}
+
+@keyframes title-arrival-from-bottom {
+  0% { translate: 0 0; }
+  71.43% {
+    translate: 0 -.2vw;
+    animation-timing-function: cubic-bezier(0, 0, .2, 1);
+  }
+  100% { translate: 0 0; }
+}
+
+@keyframes title-arrival-from-top {
+  0% { translate: 0 0; }
+  71.43% {
+    translate: 0 .2vw;
+    animation-timing-function: cubic-bezier(0, 0, .2, 1);
+  }
+  100% { translate: 0 0; }
+}
+
+.project:has(.project-entry-ear:is(:hover, :focus-visible)) .gallery-track :is(img, video),
+.project:has(.gallery-ear.right:is(:hover, :focus-visible)) .gallery-track :is(img, video).active + :is(img, video),
+.project:has(.gallery-ear.left:is(:hover, :focus-visible)) .gallery-track :is(img, video):has(+ :is(img, video).active) {
+  opacity: .9;
+}
+
+.project:has(.project-entry-ear:is(:hover, :focus-visible)) .gallery-track :is(img, video),
+.project:has(.gallery-ear.right:is(:hover, :focus-visible)) .gallery-track :is(img, video).active + :is(img, video) {
+  translate: -.2vw 0;
+}
+
+.project:has(.gallery-ear.left:is(:hover, :focus-visible)) .gallery-track :is(img, video):has(+ :is(img, video).active) {
+  translate: .2vw 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-track :is(img, video),
+  .flying-title {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+  }
+}
