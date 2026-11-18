@@ -34,7 +34,7 @@
 
 @media (orientation:portrait){.pet-projects-home{width:80vw}}
 
-.pet-project-copy{text-align:right}
+.pet-project-copy{text-align:right;text-wrap:balance}
 
 .pet-project-preview{flex:0 0 auto;width:min(200px, calc((var(--image-height) - .5em - 2px) * .6757679), calc(50% - .333333em));height:auto;max-height:none;aspect-ratio:396 / 293}
 

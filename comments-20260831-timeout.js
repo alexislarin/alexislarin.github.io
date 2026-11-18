@@ -2,8 +2,8 @@
   if (new URLSearchParams(window.location.search).has("nocomments")) return;
 
   const COMMENTS = {
-    "SODA.Auto / Requirements & Architecture": {
-      1: [
+    "soda-rms-test": {
+      "rms-1optimised.png": [
         {
           id: "rms-feature-architect-goal",
           anchor: { x: 0.31, y: 0.124 },
@@ -27,8 +27,8 @@
         },
       ],
     },
-    "Etoso / Data check": {
-      0: [
+    "etoso-data-check": {
+      "check-1.png": [
         {
           id: "data-check-todo-automation",
           anchor: { x: 0.26, y: 0.185 },
@@ -37,7 +37,7 @@
             "Initial idea was that our senior expert once a week takes a pack of companies to check and assign them to experts. After the interview with senior experts I've figured out that all the experts got the same skills, all the companies were randomly correct, and the list of companies to check could be automatically retrieved from the database with some filters and sorting applied. So I suggested automating the assignment totally, expert got just the current or next Todo on his dashboard — to get rid of assigning flow.",
         },
       ],
-      1: [
+      "check-2.png": [
         {
           id: "data-check-table-cell",
           anchor: { x: 0.421, y: 0.297 },
@@ -46,7 +46,7 @@
             "Table with all the data to check. Green cells are already confirmed by the expert. Company could be sent to senior expert review when every cell is confirmed.",
         },
       ],
-      2: [
+      "check-3.png": [
         {
           id: "data-check-data-point",
           anchor: { x: 0.083, y: 0.352 },
@@ -65,6 +65,61 @@
           anchor: { x: 0.224, y: 0.128 },
           width: 390,
           text: "Navigate to next data point that needs check without getting back to the table.",
+        },
+      ],
+    },
+    "etoso-ai-analytics": {
+      "etoso-ai-1.png": [
+        {
+          id: "ai-analytics-user-feedback",
+          anchor: { x: 0.18, y: 0.25 },
+          width: 420,
+          text: "All improvements were based on feedback from early users and quantitative usage data.",
+        },
+      ],
+      "etoso-ai-2.png": [
+        {
+          id: "ai-analytics-statuses",
+          anchor: { x: 0.25, y: 0.25 },
+          width: 400,
+          text:
+            "Replaced confusing system statuses with familiar, user-friendly terms, reducing the number of cancelled requests.",
+        },
+      ],
+      "etoso-ai-4.png": [
+        {
+          id: "ai-analytics-decision-criteria",
+          anchor: { x: 0.18, y: 0.286 },
+          width: 470,
+          text:
+            "Key decisions made by the AI agent when selecting indicators, regions, and companies were presented to users for review and adjustment. This allowed them to clarify ambiguous requests upfront, rather than waiting for a report only to receive unexpected results.",
+        },
+      ],
+    },
+  };
+
+  const CANVAS_COMMENTS = {
+    "etoso-ai-analytics": {
+      "etoso-ai-5.png": [
+        {
+          id: "ai-analytics-report-structure",
+          anchor: { x: 0.34, y: 0.15 },
+          width: 470,
+          text:
+            "Standardized the structure of all reports: a short, direct answer → Summary → Detailed sections → Conclusion.",
+        },
+        {
+          id: "ai-analytics-dashboard-link",
+          anchor: { x: 0.43, y: 0.32 },
+          width: 470,
+          text:
+            "Moved numerical data into linked, pre-filtered dashboards for deeper exploration, keeping reports free of massive tables and endless charts.",
+        },
+        {
+          id: "ai-analytics-follow-up",
+          anchor: { x: 0.36, y: 0.93 },
+          width: 450,
+          text: "Generated suggestions for follow-up queries that users might find relevant.",
         },
       ],
     },
@@ -191,10 +246,10 @@
     }
   }
 
-  function makeCommentLayer(projectTitle, imageIndex, comments) {
+  function makeCommentLayer(projectId, imageIndex, comments) {
     const layer = document.createElement("div");
     layer.className = "comment-layer";
-    layer.dataset.projectTitle = projectTitle;
+    layer.dataset.projectId = projectId;
     layer.dataset.imageIndex = String(imageIndex);
     layer.style.setProperty("--comment-image-index", imageIndex);
     layer.setAttribute("aria-label", "Design comments");
@@ -240,20 +295,60 @@
     return layer;
   }
 
+  function makeCanvasCommentLayer(projectId, imageIndex, comments) {
+    const layer = makeCommentLayer(projectId, imageIndex, comments);
+    layer.classList.add("canvas-comment-layer");
+    return layer;
+  }
+
   function mountComments() {
     document.querySelectorAll(".project").forEach((section) => {
-      if (section.dataset.commentsMounted) return;
-      const title = section.getAttribute("aria-label");
-      const projectComments = COMMENTS[title];
-      if (!projectComments) return;
+      const projectId = section.dataset.projectId;
+      const projectComments = COMMENTS[projectId];
+      const canvasComments = CANVAS_COMMENTS[projectId];
+      if (!projectComments && !canvasComments) return;
 
       const track = section.querySelector(".gallery-track");
       if (!track) return;
 
-      Object.entries(projectComments).forEach(([imageIndex, comments]) => {
-        track.appendChild(makeCommentLayer(title, imageIndex, comments));
-      });
-      section.dataset.commentsMounted = "true";
+      const media = Array.from(track.querySelectorAll("img, video"));
+      if (!section.dataset.commentsMounted) {
+        Object.entries(projectComments || {}).forEach(([filename, comments]) => {
+          const imageIndex = media.findIndex((item) => item.src.endsWith(`/${filename}`));
+          if (imageIndex < 0) {
+            console.warn(`Comment target not found: ${projectId}/${filename}`);
+            return;
+          }
+          track.appendChild(makeCommentLayer(projectId, imageIndex, comments));
+        });
+        section.dataset.commentsMounted = "true";
+      }
+
+      if (canvasComments && !section.dataset.canvasCommentsMounted) {
+        const canvas = track.querySelector(".etoso-ai-canvas");
+        const background = canvas?.querySelector(".etoso-ai-canvas-background");
+        if (!background) return;
+
+        Object.entries(canvasComments).forEach(([filename, comments]) => {
+          const imageIndex = media.findIndex((item) => item.src.endsWith(`/${filename}`));
+          if (imageIndex < 0) {
+            console.warn(`Comment target not found: ${projectId}/${filename}`);
+            return;
+          }
+          const layer = makeCanvasCommentLayer(projectId, imageIndex, comments);
+          background.appendChild(layer);
+          background.addEventListener(
+            "scroll",
+            () => {
+              if (getCurrentLayer() !== layer) return;
+              layer.classList.add(VISIBLE_CLASS);
+              scheduleHideCommentPips();
+            },
+            { passive: true },
+          );
+        });
+        section.dataset.canvasCommentsMounted = "true";
+      }
     });
     syncVisibleLayer();
   }

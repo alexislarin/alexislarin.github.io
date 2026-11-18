@@ -1,0 +1,106 @@
+.etoso-ai-canvas {
+  position: relative;
+  z-index: 1;
+  order: var(--etoso-ai-index);
+  flex: 0 0 var(--image-width);
+  width: var(--image-width);
+  min-width: var(--image-width);
+  height: var(--image-height);
+  overflow: hidden;
+  border-radius: 0.333em;
+  opacity: 0.8;
+  pointer-events: none;
+  transition: opacity 0.32s;
+}
+
+.etoso-ai-canvas.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.etoso-ai-canvas.is-preview {
+  opacity: 0.8;
+}
+
+.gallery-track > img[src$="etoso-ai-5.png"] {
+  display: none;
+}
+
+.gallery-track .etoso-ai-canvas {
+  translate: 0 0;
+  will-change: translate;
+}
+
+.gallery-track .etoso-ai-canvas.gallery-media-arriving.from-right {
+  animation: gallery-arrival-from-right 0.8s cubic-bezier(0.7, 0, 0.25, 1) both;
+}
+
+.gallery-track .etoso-ai-canvas.gallery-media-arriving.from-left {
+  animation: gallery-arrival-from-left 0.8s cubic-bezier(0.7, 0, 0.25, 1) both;
+}
+
+.project:has(.gallery-ear.right:is(:hover, :focus-visible)) .etoso-ai-canvas.is-preview {
+  opacity: 0.9;
+  translate: -0.2vw 0;
+}
+
+.etoso-ai-canvas-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.55) transparent;
+}
+
+.etoso-ai-canvas-background::-webkit-scrollbar {
+  width: 8px;
+}
+
+.etoso-ai-canvas-background::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 999px;
+}
+
+.etoso-ai-canvas-background img {
+  display: block;
+  width: 100%;
+  min-width: 100%;
+  height: auto;
+  min-height: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+  opacity: 1;
+}
+
+.canvas-comment-layer {
+  z-index: 3;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2880 / 8694;
+  inset: 0 auto auto 0;
+}
+
+.canvas-comment-layer .comment-pip,
+.canvas-comment-layer .comment-bubble {
+  left: calc(var(--comment-x) * 100%);
+  top: calc(var(--comment-y) * 100%);
+}
+
+.etoso-ai-canvas .etoso-ai-canvas-panel {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: auto;
+  min-width: 0;
+  max-width: 48%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: right top;
+  opacity: 1;
+  pointer-events: none;
+}
